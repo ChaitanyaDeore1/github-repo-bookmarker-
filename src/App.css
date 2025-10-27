@@ -1,4 +1,4 @@
-/* 🌌 Global reset */
+
 * {
   margin: 0;
   padding: 0;
@@ -6,7 +6,6 @@
   font-family: "Poppins", sans-serif;
 }
 
-/* 🌈 Background & layout */
 body {
   background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
   min-height: 100vh;
@@ -17,7 +16,6 @@ body {
   padding: 40px 0;
 }
 
-/* 🧭 Main App Container */
 .app-container {
   width: 90%;
   max-width: 1100px;
@@ -29,7 +27,7 @@ body {
   animation: fadeIn 0.8s ease-in-out;
 }
 
-/* ✨ Heading */
+
 .heading {
   text-align: center;
   font-size: 2.3rem;
@@ -40,7 +38,7 @@ body {
   margin-bottom: 30px;
 }
 
-/* 🔍 Search Section */
+
 .search-container {
   display: flex;
   justify-content: center;
@@ -89,7 +87,7 @@ body {
   transform: scale(1.05);
 }
 
-/* 🧩 Repo List */
+
 .repo-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -98,7 +96,7 @@ body {
   padding-bottom: 30px;
 }
 
-/* 📜 Status Messages */
+
 .status-msg {
   text-align: center;
   font-size: 1.1rem;
@@ -106,7 +104,7 @@ body {
   padding: 30px 0;
 }
 
-/* 🌟 Animations */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
