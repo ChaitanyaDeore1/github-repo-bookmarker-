@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import axios from "axios";
 import RepoCard from "./components/RepoCard";
 import "./App.css";
 
@@ -6,116 +7,84 @@ interface Repo {
   id: number;
   name: string;
   html_url: string;
-  description: string | null; // ✅ fixed
+  description: string;
   stargazers_count: number;
-  language: string | null; // ✅ fixed
+  language: string;
   owner: {
+    login: string;
     avatar_url: string;
   };
 }
 
 const App: React.FC = () => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState<string>("");
   const [repos, setRepos] = useState<Repo[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [bookmarked, setBookmarked] = useState<Repo[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [bookmarks, setBookmarks] = useState<Repo[]>([]);
-  const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
+  const [showBookmarks, setShowBookmarks] = useState<boolean>(false);
 
-  // Load bookmarks from localStorage once
+  // Debounce logic
   useEffect(() => {
-    const saved = localStorage.getItem("bookmarks");
-    if (saved) setBookmarks(JSON.parse(saved));
-  }, []);
+    const timer = setTimeout(() => {
+      if (query.trim()) fetchRepos(query);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [query]);
 
-  // Persist bookmarks on change
-  useEffect(() => {
-    localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
-  }, [bookmarks]);
-
-  // Debounced API call (GitHub Search)
-  const fetchRepos = useCallback(
-    async (searchTerm: string) => {
-      if (!searchTerm.trim()) {
-        setRepos([]);
-        return;
-      }
-
+  // Fetch from GitHub search API
+  const fetchRepos = async (searchQuery: string) => {
+    try {
       setLoading(true);
       setError(null);
+      const res = await axios.get(`https://api.github.com/search/repositories?q=${searchQuery}&per_page=30`);
+      setRepos(res.data.items || []);
+    } catch {
+      setError("Failed to fetch repositories. Try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      try {
-        const response = await fetch(
-          `https://api.github.com/search/repositories?q=${searchTerm}&per_page=30`
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch repositories");
-        }
-        const data = await response.json();
-        setRepos(data.items || []);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    },
-    []
-  );
+  // Toggle bookmark
+  const toggleBookmark = useCallback((repo: Repo) => {
+    setBookmarked((prev) => {
+      const exists = prev.some((r) => r.id === repo.id);
+      const updated = exists ? prev.filter((r) => r.id !== repo.id) : [...prev, repo];
+      localStorage.setItem("bookmarks", JSON.stringify(updated));
+      return updated;
+    });
+  }, []);
 
-  // Debounce input
+  // Load bookmarks
   useEffect(() => {
-    const handler = setTimeout(() => {
-      if (!showBookmarksOnly) fetchRepos(query);
-    }, 300); // 300ms debounce
-    return () => clearTimeout(handler);
-  }, [query, fetchRepos, showBookmarksOnly]);
+    const stored = localStorage.getItem("bookmarks");
+    if (stored) setBookmarked(JSON.parse(stored));
+  }, []);
 
-  const toggleBookmark = useCallback(
-    (repo: Repo) => {
-      setBookmarks((prev) => {
-        const exists = prev.find((r) => r.id === repo.id);
-        return exists
-          ? prev.filter((r) => r.id !== repo.id)
-          : [...prev, repo];
-      });
-    },
-    []
-  );
-
-  const isBookmarked = useCallback(
-    (repoId: number) => bookmarks.some((r) => r.id === repoId),
-    [bookmarks]
-  );
-
-  const displayedRepos = useMemo(
-    () => (showBookmarksOnly ? bookmarks : repos),
-    [showBookmarksOnly, bookmarks, repos]
-  );
+  const displayedRepos = showBookmarks ? bookmarked : repos;
 
   return (
     <div className="app-container">
-      <h1 className="heading">GitHub Repo Bookmark App</h1>
+      <h1 className="heading">🔍 GitHub Repo Bookmarker</h1>
 
       <div className="search-container">
-        {!showBookmarksOnly && (
-          <input
-            type="text"
-            placeholder="Search GitHub repositories..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="search-input"
-          />
-        )}
-
+        <input
+          className="search-input"
+          type="text"
+          placeholder="Search for repositories..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
         <button
           className="toggle-btn"
-          onClick={() => setShowBookmarksOnly(!showBookmarksOnly)}
+          onClick={() => setShowBookmarks((prev) => !prev)}
         >
-          {showBookmarksOnly ? "Show All" : "Show Bookmarked Only"}
+          {showBookmarks ? "Show All Results" : "Show Bookmarked Only"}
         </button>
       </div>
 
-      {loading && <p className="status-msg">Loading...</p>}
+      {loading && <p className="status-msg">Loading repositories...</p>}
       {error && <p className="status-msg error">{error}</p>}
       {!loading && !error && displayedRepos.length === 0 && (
         <p className="status-msg">No repositories found.</p>
@@ -126,8 +95,8 @@ const App: React.FC = () => {
           <RepoCard
             key={repo.id}
             repo={repo}
-            isBookmarked={isBookmarked(repo.id)}
-            toggleBookmark={() => toggleBookmark(repo)}
+            isBookmarked={bookmarked.some((r) => r.id === repo.id)}
+            onToggleBookmark={() => toggleBookmark(repo)}
           />
         ))}
       </div>
