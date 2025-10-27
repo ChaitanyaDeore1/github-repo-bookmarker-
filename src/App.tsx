@@ -24,18 +24,18 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [showBookmarksOnly, setShowBookmarksOnly] = useState<boolean>(false);
 
-  // 🧠 Load saved bookmarks
+
   useEffect(() => {
     const stored = localStorage.getItem("bookmarkedRepos");
     if (stored) setBookmarked(JSON.parse(stored));
   }, []);
 
-  // 🔁 Save bookmarks whenever they change
+  
   useEffect(() => {
     localStorage.setItem("bookmarkedRepos", JSON.stringify(bookmarked));
   }, [bookmarked]);
 
-  // ⏳ Debounce search effect (300ms)
+
   useEffect(() => {
     const delay = setTimeout(() => {
       if (query.trim()) fetchRepos(query);
@@ -44,7 +44,7 @@ const App: React.FC = () => {
     return () => clearTimeout(delay);
   }, [query]);
 
-  // 🔍 Fetch Repos from GitHub Search API
+
   const fetchRepos = useCallback(async (search: string) => {
     try {
       setLoading(true);
@@ -61,7 +61,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  // ⭐ Toggle Bookmark
+
   const toggleBookmark = useCallback((repo: Repo) => {
     setBookmarked((prev) => {
       const exists = prev.some((r) => r.id === repo.id);
@@ -69,7 +69,7 @@ const App: React.FC = () => {
     });
   }, []);
 
-  // 🧮 Decide what to display
+
   const displayedRepos = useMemo(
     () =>
       showBookmarksOnly
