@@ -1,0 +1,108 @@
+/* 🌍 Global Styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+}
+
+/* 🧩 App Layout */
+.app-container {
+  width: 100%;
+  max-width: 1000px;
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+/* ✨ Heading */
+.heading {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #61dafb;
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
+}
+
+/* 🔍 Search Section */
+.search-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  padding: 0.8rem 1rem;
+  width: 60%;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 8px rgba(97, 218, 251, 0.6);
+}
+
+/* 🟡 Toggle Button */
+.toggle-btn {
+  padding: 0.8rem 1.2rem;
+  background: linear-gradient(135deg, #61dafb, #007bff);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.toggle-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(97, 218, 251, 0.5);
+}
+
+/* 📜 Status Messages */
+.status-msg {
+  font-size: 1rem;
+  margin-top: 1rem;
+  color: #ccc;
+}
+
+.status-msg.error {
+  color: #ff6b6b;
+}
+
+/* 📦 Repo List */
+.repo-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  padding-bottom: 2rem;
+}
+
+/* 🌟 Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
