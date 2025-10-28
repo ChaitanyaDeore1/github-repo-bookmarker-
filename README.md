@@ -93,7 +93,7 @@ npm run dev
 npm run lint
 
 # build
-npm run buil
+npm run build
 
 ---
 
