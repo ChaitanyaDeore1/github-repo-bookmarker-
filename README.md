@@ -1,73 +1,72 @@
-# React + TypeScript + Vite
+# GitHub Repo Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Small, focused front-end micro app built with **React + TypeScript + Vite**.  
+I built this as a micro-project to demonstrate clean component design, API handling, and small performance tweaks that matter in production.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ⚙️ Scope & Key Features
 
-## React Compiler
+### 🔍 1. Search
+- One text input box with **debounced** search (300 ms delay).
+- Fetches results from GitHub’s `/search/repositories` endpoint.
+- Displays up to 30 repositories with title, description, language, stars, and owner avatar.
+- Clear **loading**, **empty**, and **error** messages for better UX.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### ⭐ 2. Bookmarks
+- Each card has a “⭐ Bookmark” toggle.
+- Bookmarked items persist via **`localStorage`**, even after page reload.
+- “Bookmarked Only” filter switch to view saved repositories.
 
-## Expanding the ESLint configuration
+### ⚡ 3. Performance
+- Avoids unnecessary re-renders using `React.memo`, `useCallback`, and `useMemo`.
+- Optimized rendering when toggling bookmarks or updating filters.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🧰 4. Tooling
+- Written in **TypeScript** with strict types for all props and API responses.
+- **ESLint** + **Prettier** configured — project runs lint-clean (`npm run lint` has 0 warnings).
+- Uses modern React hooks only — no external state libraries.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 🚀 5. Delivery
+- Clean, deployable build using Vite.  
+- Hosted on **Vercel** for instant access.  
+- Detailed README explaining design decisions and next steps.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+I kept the app intentionally small so the code is easy to read and each file has one responsibility.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Why I built it this way
+- **Debounce** to avoid spamming the GitHub API while typing.
+- **Memoization** to prevent pointless re-renders when state changes that don’t affect a component occur.
+- **localStorage** for persistence — simple and reliable for demo data.
+- **TypeScript** to catch mistakes earlier and make the data shapes explicit.
+
+---
+
+## Demo & Repo
+- Repo: ` https://github.com/ChaitanyaDeore1/github-repo-bookmarker-.git`  
+- Live demo: `github-repo-bookmarker.vercel.app`
+  
+---
+
+## How to run 
+```bash
+# clone
+git clone https://github.com/ChaitanyaDeore1/github-repo-bookmarker-.git
+cd github-repo-explorer
+
+# install
+npm install
+
+# dev server
+npm run dev
+
+# lint
+npm run lint
+
+# build
+npm run build
