@@ -47,14 +47,15 @@
   color: #ffffff;
 }
 
-.repo-desc {
-  color: #cfcfcf;
+.repo-desc{
+  color: #d0d0d0;
   font-size: 0.9rem;
-  margin-top: 0.3rem;
   line-height: 1.4;
-  max-height: 3rem;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; 
+  -webkit-box-orient: vertical;
 }
 
 .repo-meta {
