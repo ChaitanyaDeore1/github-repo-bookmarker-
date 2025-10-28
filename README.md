@@ -53,6 +53,30 @@ I kept the app intentionally small so the code is easy to read and each file has
   
 ---
 
+
+
+## 🧠 Design Decisions & Trade-offs
+
+| Area | Decision | Reasoning |
+|------|-----------|-----------|
+| **Search** | Debounced input (300ms) | Reduces API load and avoids spamming requests. |
+| **State Management** | Used React hooks only | Simpler than Redux for this scope; easier to read. |
+| **Persistence** | localStorage for bookmarks | Lightweight, survives reloads, no backend needed. |
+| **Performance** | Used React.memo/useCallback | Avoids re-renders for list items and handlers. |
+| **Error Handling** | Graceful empty/error UI states | Keeps UX consistent and predictable. |
+
+---
+
+## 🚀 Next Steps
+
+- Add **pagination** for more than 30 results.  
+- Implement **dark/light theme toggle**.  
+- Show **repository details** in a modal or side panel.  
+- Add **unit tests** for hooks and components.  
+- Improve **mobile responsiveness** for smaller screens.
+
+---
+
 ## How to run 
 ```bash
 # clone
@@ -69,4 +93,12 @@ npm run dev
 npm run lint
 
 # build
-npm run build
+npm run buil
+
+---
+
+
+
+
+
+d
