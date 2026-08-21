@@ -40,7 +40,7 @@ const App: React.FC = () => {
     const delay = setTimeout(() => {
       if (query.trim()) fetchRepos(query);
       else setRepos([]);
-    }, 300);
+    }, 500);
     return () => clearTimeout(delay);
   }, [query]);
 
