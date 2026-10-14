@@ -27,7 +27,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const stored = localStorage.getItem("bookmarkedRepos");
-    if (stored) setBookmarked(JSON.parse(stored));
+    if (!stored) setBookmarked(JSON.parse(stored));
   }, []);
 
   
